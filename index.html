@@ -1,0 +1,1228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="A birthday surprise: our timeline, our photos and a note.">
+<meta name="robots" content="noindex">
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+html { background: #1b0e1b; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+</style>
+<title>Happy Birthday, BINITA</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap">
+<style>
+:root {
+  /* Layout: left-aligned hero over a night sky of drifting petals, a live "together for" counter, a vertical timeline of polaroids, a mosaic gallery with a viewer, then a closing letter. Single deliberate look: plum night, rose, candle gold. */
+  --night: #1b0e1b;
+  --night-2: #2b1628;
+  --ink: #f7ebe6;
+  --muted: #cfb4ba;
+  --rose: #eaa6a3;
+  --gold: #ecc994;
+  --paper: #f4e7e0;
+  --paper-ink: #3a2433;
+  --line: rgba(247, 235, 230, 0.16);
+  --glass: rgba(255, 238, 232, 0.06);
+  --scrim: rgba(12, 5, 12, 0.94);
+  --shade: rgba(15, 6, 15, 0.72);
+  --f-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --f-script: 'Pinyon Script', 'Snell Roundhand', 'Brush Script MT', cursive;
+  --f-body: 'Jost', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--night);
+  background-image:
+    radial-gradient(120% 60% at 15% 0%, color-mix(in srgb, var(--rose) 24%, var(--night)) 0%, transparent 62%),
+    radial-gradient(80% 50% at 100% 38%, color-mix(in srgb, var(--gold) 11%, var(--night)) 0%, transparent 65%),
+    radial-gradient(100% 45% at 50% 100%, color-mix(in srgb, var(--rose) 16%, var(--night)) 0%, transparent 70%);
+  background-repeat: no-repeat;
+  color: var(--ink);
+  font: 400 1.0625rem/1.65 var(--f-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+#petals { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding-block: 56px 120px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  overflow-x: clip;
+}
+
+.icon { width: 1em; height: 1em; fill: currentColor; display: inline-block; vertical-align: -0.12em; }
+
+/* ---------- Hero ---------- */
+.eyebrow {
+  font: 500 0.78rem/1.2 var(--f-body);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0;
+}
+h1 {
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-size: clamp(2.2rem, 6.5vw, 4rem);
+  line-height: 1.05;
+  margin: 18px 0 0;
+  text-wrap: balance;
+}
+.name {
+  display: block;
+  font-family: var(--f-script);
+  font-weight: 400;
+  font-size: clamp(4rem, 18vw, 9.5rem);
+  line-height: 1.1;
+  padding: 0.02em 0.1em 0.12em 0;
+  color: var(--rose);
+  text-shadow: 0 0 44px rgba(234, 166, 163, 0.35);
+  overflow-wrap: anywhere;
+}
+.lede { max-width: 34rem; font-size: 1.18rem; color: var(--muted); margin: 8px 0 0; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.hint { margin: 14px 0 0; font-size: 0.88rem; color: var(--muted); }
+
+.btn {
+  font: 500 0.95rem/1 var(--f-body);
+  letter-spacing: 0.04em;
+  padding: 0.95em 1.5em;
+  border-radius: 999px;
+  border: 1px solid var(--rose);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.btn:hover { background: color-mix(in srgb, var(--rose) 18%, transparent); }
+.btn.primary { background: var(--rose); color: var(--night); }
+.btn.primary:hover { background: color-mix(in srgb, var(--rose) 82%, var(--ink)); }
+.btn .icon { font-size: 1.15em; }
+
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+.together {
+  margin-top: 52px;
+  border: 1px solid var(--line);
+  background: var(--glass);
+  border-radius: 14px;
+  padding: 22px 20px 20px;
+  max-width: 780px;
+}
+.together-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; align-items: baseline; }
+.together-head h2 { font: 500 1.35rem/1.2 var(--f-display); margin: 0; font-style: italic; }
+.together-head span { font-size: 0.85rem; color: var(--muted); }
+.units { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 8px; margin: 18px 0 0; padding: 0; list-style: none; }
+.unit { display: flex; flex-direction: column; gap: 2px; }
+.unit b { font: 500 clamp(1.9rem, 6vw, 2.6rem)/1 var(--f-display); font-variant-numeric: tabular-nums; color: var(--ink); }
+.unit span { font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+.total { margin: 18px 0 0; font-size: 0.95rem; color: var(--gold); }
+@media (min-width: 640px) { .units { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+
+/* ---------- Sections ---------- */
+section { margin-top: 112px; }
+.sec-head h2 {
+  font: 500 clamp(1.9rem, 5vw, 3rem)/1.1 var(--f-display);
+  margin: 12px 0 0;
+  text-wrap: balance;
+}
+.sec-head p { margin: 12px 0 0; color: var(--muted); max-width: 34rem; }
+
+/* ---------- Timeline ---------- */
+.timeline { list-style: none; margin: 44px 0 0; padding: 0; position: relative; }
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 11px;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: linear-gradient(var(--rose), var(--line) 88%, transparent);
+}
+.item { position: relative; padding: 0 0 56px 46px; display: grid; gap: 20px; min-width: 0; }
+.item:last-child { padding-bottom: 0; }
+.node {
+  position: absolute;
+  left: 0;
+  top: 1px;
+  width: 23px;
+  height: 23px;
+  display: grid;
+  place-items: center;
+  background: var(--night);
+  border-radius: 50%;
+  color: var(--rose);
+  font-size: 17px;
+}
+.when { font: 500 0.78rem/1.3 var(--f-body); letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); }
+.item h3 { font: 500 clamp(1.55rem, 4vw, 2rem)/1.15 var(--f-display); margin: 6px 0 8px; }
+.item p { margin: 0; color: var(--muted); max-width: 34rem; }
+.item.today .node { color: var(--gold); font-size: 20px; }
+.item.today h3 { color: var(--gold); }
+@media (min-width: 760px) {
+  .item.has-photo { grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: 44px; align-items: start; }
+}
+
+.polaroid {
+  margin: 0;
+  width: 100%;
+  max-width: 440px;
+  background: var(--paper);
+  padding: 10px 10px 40px;
+  border-radius: 3px;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.38);
+  transform: rotate(-1.6deg);
+  position: relative;
+}
+.item:nth-child(even) .polaroid { transform: rotate(1.4deg); }
+.polaroid img, .polaroid .ph { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.polaroid figcaption {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 7px;
+  text-align: center;
+  font: 400 1.3rem/1.2 var(--f-script);
+  color: var(--paper-ink);
+}
+
+.ph {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, color-mix(in srgb, var(--rose) calc(var(--p, 30) * 1%), var(--night-2)), var(--night-2));
+  color: color-mix(in srgb, var(--paper) 55%, transparent);
+  font-size: 2.2rem;
+}
+
+/* ---------- Gallery ---------- */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: 210px;
+  grid-auto-flow: dense;
+  gap: 10px;
+  margin-top: 36px;
+}
+@media (min-width: 720px) { .gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 320px; gap: 14px; } }
+.tile { position: relative; padding: 0; border: 0; border-radius: 6px; overflow: hidden; cursor: pointer; background: var(--night-2); min-width: 0; color: var(--ink); text-align: left; }
+.tile.tall { grid-row: span 2; }
+.tile.wide { grid-column: span 2; }
+.tile img, .tile .ph { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+.tile:hover img, .tile:hover .ph { transform: scale(1.04); }
+.tile .cap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 30px 12px 10px;
+  background: linear-gradient(transparent, var(--shade));
+  font: italic 500 1.05rem/1.2 var(--f-display);
+}
+
+/* ---------- Lightbox ---------- */
+.lb {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: var(--scrim);
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  justify-items: center;
+  align-items: center;
+  padding-top: calc(64px + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.lb-fig { margin: 0; max-width: min(92vw, 920px); min-height: 0; max-height: 100%; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.lb-fig img { display: block; max-width: 100%; max-height: calc(100vh - 220px); object-fit: contain; border-radius: 4px; }
+.lb-fig .ph { width: min(78vw, 460px); aspect-ratio: 4 / 5; border-radius: 4px; font-size: 4rem; }
+.lb-fig figcaption { font: italic 500 1.35rem/1.3 var(--f-display); text-align: center; }
+.lb-nav { display: flex; align-items: center; gap: 20px; padding-top: 12px; }
+.lb-nav span { font-size: 0.85rem; color: var(--muted); font-variant-numeric: tabular-nums; min-width: 4.5rem; text-align: center; }
+.round {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--glass);
+  color: var(--ink);
+  font: 400 1.4rem/1 var(--f-body);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.round:hover { border-color: var(--rose); }
+.lb-close { position: absolute; top: calc(12px + env(safe-area-inset-top, 0px)); right: max(12px, env(safe-area-inset-right, 0px)); }
+
+/* ---------- Letter ---------- */
+.letter { max-width: 40rem; }
+.letter-card { margin-top: 28px; border: 1px solid var(--line); background: var(--glass); border-radius: 14px; padding: clamp(22px, 5vw, 40px); }
+.letter-card p { font: italic 400 clamp(1.25rem, 3.4vw, 1.5rem)/1.6 var(--f-display); margin: 0 0 1em; color: var(--ink); }
+.sign { font: 400 clamp(2.4rem, 8vw, 3.4rem)/1.2 var(--f-script); color: var(--rose); margin: 0.4em 0 0; padding-bottom: 0.1em; }
+.sign-lead { font: 500 0.78rem/1.2 var(--f-body); letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-top: 1.4em; }
+.foot { margin-top: 72px; font-size: 0.85rem; color: var(--muted); }
+
+/* ---------- Opening screen ---------- */
+.gate {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding-block: calc(24px + env(safe-area-inset-top, 0px)) calc(24px + env(safe-area-inset-bottom, 0px));
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+  background-color: var(--night);
+  background-image: radial-gradient(90% 60% at 50% 30%, color-mix(in srgb, var(--rose) 26%, var(--night)) 0%, transparent 70%);
+  transition: opacity 0.9s ease;
+}
+.gate.gone { opacity: 0; pointer-events: none; }
+.gate-card { max-width: 26rem; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.gate-heart { font-size: 3rem; color: var(--rose); animation: beat 1.6s ease-in-out infinite; }
+.gate h2 { font: 500 clamp(2rem, 7vw, 2.8rem)/1.1 var(--f-display); margin: 0; text-wrap: balance; }
+.gate .hint { margin: 0; }
+@keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+@media (prefers-reduced-motion: reduce) { .gate { transition: none; } .gate-heart { animation: none; } }
+
+/* ---------- Celebration ---------- */
+.gate { overflow-x: hidden; overflow-y: auto; }
+.gate-party { position: relative; z-index: 1; width: 100%; max-width: 920px; margin: auto; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.banner { display: flex; flex-direction: column; align-items: center; gap: clamp(10px, 3vw, 22px); width: 100%; }
+.bunting { position: relative; display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(3px, 0.9vw, 8px); padding-top: 8px; max-width: 100%; }
+.bunting::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px; border-radius: 2px; background: var(--gold); }
+.flag {
+  width: clamp(34px, 9.8vw, 84px);
+  height: clamp(46px, 13vw, 108px);
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  padding-top: 0.28em;
+  font: 600 clamp(1.45rem, 6vw, 3.3rem)/1 var(--f-display);
+  color: var(--night);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: 50% 0;
+  animation: flagin 0.8s cubic-bezier(0.2, 1.4, 0.4, 1) both, sway 3.4s ease-in-out infinite alternate;
+  animation-delay: calc(var(--i) * 80ms), calc(900ms + var(--i) * 80ms);
+}
+.flag:nth-child(3n + 1) { background: var(--rose); }
+.flag:nth-child(3n + 2) { background: var(--gold); }
+.flag:nth-child(3n) { background: var(--paper); }
+.party-name {
+  margin: 0;
+  padding: 0 0.1em 0.12em 0;
+  font: 400 clamp(3rem, 14vw, 6.5rem)/1.1 var(--f-script);
+  color: var(--rose);
+  text-shadow: 0 0 44px rgba(234, 166, 163, 0.4);
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+.proceed { margin-top: 10px; animation: fadeup 0.9s ease both; }
+.party-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
+@keyframes flagin { from { opacity: 0; transform: translateY(-70px) rotate(-25deg); } to { opacity: 1; transform: none; } }
+@keyframes sway { from { transform: rotate(-3deg); } to { transform: rotate(3deg); } }
+@keyframes fadeup { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .flag, .proceed { animation: none; } }
+
+/* ---------- Cinematic celebration ---------- */
+.party-canvas { z-index: 0; }
+.gate.party-on .party-canvas { z-index: 2; }
+.gate.party-on.calm .party-canvas { z-index: 0; }
+.gate.calm .gate-party { position: relative; z-index: 1; }
+.gate-card { position: relative; z-index: 1; }
+.rays-wrap { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.rays {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  width: 170vmax;
+  height: 170vmax;
+  margin: -85vmax 0 0 -85vmax;
+  background: repeating-conic-gradient(from 0deg, rgba(236, 201, 148, 0.22) 0deg 5deg, transparent 5deg 18deg);
+  -webkit-mask-image: radial-gradient(circle, #000 0%, transparent 40%);
+  mask-image: radial-gradient(circle, #000 0%, transparent 40%);
+  opacity: 0;
+  transition: opacity 1.6s ease 0.5s;
+  animation: spin 70s linear infinite;
+}
+.gate.party-on .rays { opacity: 1; }
+.flash {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle at 50% 55%, rgba(255, 247, 240, 0.96) 0%, rgba(234, 166, 163, 0.62) 32%, transparent 68%);
+}
+.gate.party-on .flash { animation: flash 1.5s ease-out both; }
+.gate.party-on { box-shadow: inset 0 0 220px rgba(10, 3, 10, 0.7); }
+.gate-party.shake { animation: shake 0.5s linear; }
+#partyDate { animation: fadeup 1s ease 0.3s both; }
+.party-name { animation: nameIn 1.9s ease-out 1.3s both; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes flash { from { opacity: 1; } to { opacity: 0; } }
+@keyframes nameIn { from { opacity: 0; filter: blur(14px); transform: scale(0.9); } to { opacity: 1; filter: blur(0); transform: none; } }
+@keyframes shake {
+  0% { transform: translate(0, 0); }
+  15% { transform: translate(calc(var(--sh) * -1), calc(var(--sh) * 0.5)); }
+  30% { transform: translate(var(--sh), calc(var(--sh) * -0.6)); }
+  45% { transform: translate(calc(var(--sh) * -0.7), calc(var(--sh) * -0.3)); }
+  60% { transform: translate(calc(var(--sh) * 0.5), calc(var(--sh) * 0.4)); }
+  80% { transform: translate(calc(var(--sh) * -0.2), 0); }
+  100% { transform: translate(0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rays, .flash, .party-name, #partyDate, .gate-party.shake { animation: none !important; }
+  .gate.party-on .flash { display: none; }
+}
+
+/* ---------- Floating music control ---------- */
+.music {
+  position: fixed;
+  right: calc(16px + env(safe-area-inset-right, 0px));
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  z-index: 20;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid var(--rose);
+  background: color-mix(in srgb, var(--night-2) 88%, transparent);
+  color: var(--rose);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+.music svg { width: 22px; height: 22px; }
+.eq { display: none; gap: 3px; align-items: flex-end; height: 18px; }
+.eq i { width: 3px; height: 100%; background: currentColor; border-radius: 2px; transform-origin: bottom; animation: eq 1s ease-in-out infinite; }
+.eq i:nth-child(2) { animation-delay: -0.4s; }
+.eq i:nth-child(3) { animation-delay: -0.7s; }
+.music[aria-pressed="true"] .eq { display: flex; }
+.music[aria-pressed="true"] .note { display: none; }
+@keyframes eq { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .eq i { animation: none; transform: scaleY(0.7); }
+  .tile img, .tile .ph, .btn { transition: none; }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></symbol>
+</svg>
+
+<canvas id="petals" aria-hidden="true"></canvas>
+
+<button class="music" id="musicFab" data-music type="button" aria-pressed="false" aria-label="Play music">
+  <svg class="note" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l11-2v12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.5" fill="currentColor"/><circle cx="17.5" cy="16" r="2.5" fill="currentColor"/></svg>
+  <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
+</button>
+
+<main class="wrap">
+  <header>
+    <p class="eyebrow" id="bdayLabel">15 November 2026</p>
+    <h1>Happy Birthday,<span class="name" data-her>My Love</span></h1>
+    <p class="lede">I made you a small place for everything that has happened since the day we met.</p>
+    <div class="actions">
+      <button class="btn primary" data-music type="button" aria-pressed="false">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l11-2v12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.5" fill="currentColor"/><circle cx="17.5" cy="16" r="2.5" fill="currentColor"/></svg>
+        <span data-music-label>Play our music</span>
+      </button>
+      <button class="btn" id="seeStory" type="button">See our story</button>
+    </div>
+    <p class="hint">Turn your volume up a little before you start.</p>
+
+    <div class="together" aria-live="off">
+      <div class="together-head">
+        <h2>Together for</h2>
+        <span id="sinceLabel">since 14 February 2023</span>
+      </div>
+      <ul class="units">
+        <li class="unit"><b id="u-y">0</b><span>Years</span></li>
+        <li class="unit"><b id="u-m">0</b><span>Months</span></li>
+        <li class="unit"><b id="u-d">0</b><span>Days</span></li>
+        <li class="unit"><b id="u-h">0</b><span>Hours</span></li>
+        <li class="unit"><b id="u-i">0</b><span>Minutes</span></li>
+        <li class="unit"><b id="u-s">0</b><span>Seconds</span></li>
+      </ul>
+      <p class="total" id="totalDays"></p>
+    </div>
+  </header>
+
+  <section id="story">
+    <div class="sec-head">
+      <p class="eyebrow">Our timeline</p>
+      <h2>From the day we met until today</h2>
+      <p>The moments I keep going back to, in the order they happened.</p>
+    </div>
+    <ol class="timeline" id="timeline"></ol>
+  </section>
+
+  <section id="memories">
+    <div class="sec-head">
+      <p class="eyebrow">Our gallery</p>
+      <h2>Little pieces of us</h2>
+      <p>Tap any photo to see it bigger.</p>
+    </div>
+    <div class="gallery" id="gallery"></div>
+  </section>
+
+  <section class="letter" id="letter">
+    <div class="sec-head">
+      <p class="eyebrow">One more thing</p>
+      <h2>A note for you</h2>
+    </div>
+    <div class="letter-card" id="letterCard"></div>
+    <p class="foot">Made with love, on your birthday.</p>
+  </section>
+</main>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
+  <button class="round lb-close" id="lbClose" type="button" aria-label="Close photo">&times;</button>
+  <figure class="lb-fig" id="lbFig"></figure>
+  <div class="lb-nav">
+    <button class="round" id="lbPrev" type="button" aria-label="Previous photo">&#8592;</button>
+    <span id="lbCount"></span>
+    <button class="round" id="lbNext" type="button" aria-label="Next photo">&#8594;</button>
+  </div>
+</div>
+
+<div class="gate" id="gate" role="dialog" aria-modal="true" aria-label="Open your birthday surprise">
+  <div class="rays-wrap" aria-hidden="true"><div class="rays"></div></div>
+  <div class="flash" aria-hidden="true"></div>
+  <div class="gate-card" id="gateIntro">
+    <svg class="icon gate-heart" aria-hidden="true"><use href="#i-heart"/></svg>
+    <p class="eyebrow">For <span data-her>My Love</span></p>
+    <h2>I made you something</h2>
+    <button class="btn primary" id="gateBtn" type="button">Open your surprise</button>
+    <p class="hint">Music will play. Turn your volume up a little.</p>
+  </div>
+  <div class="gate-party" id="gateParty" hidden>
+    <p class="eyebrow" id="partyDate">15 November 2026</p>
+    <div class="banner" role="img" aria-label="Happy Birthday">
+      <div class="bunting" aria-hidden="true"><span class="flag" style="--i:0">H</span><span class="flag" style="--i:1">A</span><span class="flag" style="--i:2">P</span><span class="flag" style="--i:3">P</span><span class="flag" style="--i:4">Y</span></div>
+      <div class="bunting" aria-hidden="true"><span class="flag" style="--i:5">B</span><span class="flag" style="--i:6">I</span><span class="flag" style="--i:7">R</span><span class="flag" style="--i:8">T</span><span class="flag" style="--i:9">H</span><span class="flag" style="--i:10">D</span><span class="flag" style="--i:11">A</span><span class="flag" style="--i:12">Y</span></div>
+    </div>
+    <p class="party-name" data-her>My Love</p>
+    <button class="btn primary proceed" id="proceedBtn" type="button" hidden>Shall we proceed? <span aria-hidden="true">&#8594;</span></button>
+  </div>
+  <canvas class="party-canvas" id="partyCanvas" aria-hidden="true"></canvas>
+</div>
+<noscript><style>.gate { display: none; }</style></noscript>
+
+<!--
+  ===== EDIT YOUR TEXT AND PHOTOS HERE =====
+  Change only the words between the quote marks. Keep every comma, quote mark and bracket.
+  Photos: "photo" and "src" take a file path such as "photos/first-date.jpg".
+-->
+<script type="application/json" id="storyFallback">
+{
+  "config": {
+   "herName": "SANU",
+    "yourName": "Kesav",
+    "birthdayLabel": "22 November 2026 / 06 Mangshir 2083",
+    "met": "2026-08-28T18:31:00",
+    "music": true
+  },
+  "milestones": [
+    {
+      "date": "28 August 2026",
+      "title": "How it Started",
+      "text": "The first converstation we ever had.",
+      "photo": "photos/start.jpeg",
+      "cap": "The Start"
+    },
+    {
+      "date": "11 September 2026",
+      "title": "The day we met",
+      "text": "Something about that first conversation made time disappear. I still remember how nervous I was, did not know what to say. But time flyed.",
+      "photo": "photos/first-date.jpeg",
+      "cap": "Day one - We did not click"
+    },
+    {
+     "date": "12 September 2026",
+      "title": "Our first Official date",
+      "text": "Good Weather, wonderful evening. We stayed until day faded in to night. Just as we talked about going home, it rained. It felt like the universe wanted us to stay a bit longer.",
+      "photo": "photos/second.jpeg",
+      "cap": "Look at us"
+    },
+    {
+      "date": "18 October 2026",
+      "title": "Firt Meet with your Mom",
+      "text": "Nervous as Hell. Satisfactory it was?.",
+      "photo": "",
+      "cap": "NO Photo"
+    },
+    {
+     "date": "09 November 2026",
+      "title": "Meeting Both Family for Marriage",
+      "text": "The Day. Feeling Excited, Happy, Anxious, Releved. Totally overwhelmed by the mix of emotions.",
+      "photo": "photos/marriage.jpeg",
+      "cap": "Together"
+    },
+    {
+       "date": "10 November 2026",
+      "title": "The Next Day Was ours",
+      "text": "Bidesh Gako Sangai. Bg with stuffs. Done things togeher, still felt like the time ran out quickly.",
+      "photo": "photos/bidesh.jpeg",
+      "cap": "Hera ko Heari"
+    },
+    {
+      "date": "Today, 22 November 2026 / 06 Mangshir 2083",
+      "title": "Your birthday",
+      "text": "You’ve made my life softer, warmer, and a thousand times happier. Happy birthday, my love -- thank you for being you.",
+      "photo": "photos/birthday.jpeg",
+      "cap": "Date Expired",
+      "today": true
+    }
+  ],
+  "gallery": [
+    {
+      "src": "photos/1.jpeg",
+      "caption": "Smile"
+    },
+    {
+      "src": "photos/2.jpeg",
+      "caption": "Golden"
+    },
+    {
+      "src": "photos/3.jpeg",
+      "caption": "HMMM"
+    },
+    {
+      "src": "photos/4.jpeg",
+      "caption": "Ghumgham"
+    },
+    {
+      "src": "photos/5.jpeg",
+      "caption": "Together"
+    },
+    {
+      "src": "photos/6.jpeg",
+      "caption": "Saari Lako Re"
+    },
+    {
+      "src": "photos/7.jpeg",
+      "caption": "Tied up"
+    },
+    {
+      "src": "photos/bidesh.jpeg",
+      "caption": ""
+    },
+    {
+      "src": "photos/8.jpeg",
+      "caption": "Flowers"
+    }
+  ],
+  "letter": [
+    "Happy Birthday, Sanu,",
+    "I made this page so that, for a few minutes, you could see your story the way I see it: a long line of small moments that each led me to you.",
+    "When I think about what I am most grateful for, it is never the big things. It is how easy you make ordinary days, how effortless things feel around you, how simple the life seems and it is all that I want to keep.",
+    "On your birthday I wish you more than cake and candles. I wish you slow mornings, a year full of things that make you proud, and every dream you carry quietly to come a little closer. Wherever it takes you, I will be right beside you, cheering the loudest, celebrating the hardest.",
+    "Thank you for being a part of me. I love you more today than when this page began, and tomorrow I expect to love you a little more every day.",
+    "(Let’s love each other the hardest when it is harder to love at all)"
+
+    ]
+}
+</script>
+
+<script>
+(function () {
+  "use strict";
+
+  var CONFIG, MILESTONES, GALLERY, LETTER, started = false;
+  function boot(data) {
+    if (started) return;
+    started = true;
+    CONFIG = data.config;
+    CONFIG.met = new Date(CONFIG.met);
+    MILESTONES = data.milestones;
+    GALLERY = data.gallery;
+    LETTER = data.letter;
+    start();
+  }
+  function start() {
+
+  var $ = function (s) { return document.querySelector(s); };
+  var HEART = '<svg class="icon" aria-hidden="true"><use href="#i-heart"/></svg>';
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function media(src, alt, p) {
+    return src ? '<img src="' + esc(src) + '" alt="' + esc(alt) + '" loading="lazy">'
+               : '<div class="ph" style="--p:' + p + '">' + HEART + '</div>';
+  }
+
+  /* ---- names and static labels ---- */
+  document.querySelectorAll("[data-her]").forEach(function (el) { el.textContent = CONFIG.herName; });
+  $("#bdayLabel").textContent = CONFIG.birthdayLabel;
+  $("#sinceLabel").textContent = "since " + new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric" }).format(CONFIG.met);
+
+  /* ---- live counter ---- */
+  function diff(a, b) {
+    var y = b.getFullYear() - a.getFullYear();
+    var m = b.getMonth() - a.getMonth();
+    var d = b.getDate() - a.getDate();
+    var h = b.getHours() - a.getHours();
+    var i = b.getMinutes() - a.getMinutes();
+    var s = b.getSeconds() - a.getSeconds();
+    if (s < 0) { s += 60; i--; }
+    if (i < 0) { i += 60; h--; }
+    if (h < 0) { h += 24; d--; }
+    if (d < 0) { d += new Date(b.getFullYear(), b.getMonth(), 0).getDate(); m--; }
+    if (m < 0) { m += 12; y--; }
+    return { y: y, m: m, d: d, h: h, i: i, s: s };
+  }
+  function tick() {
+    var now = new Date();
+    var t = diff(CONFIG.met, now);
+    $("#u-y").textContent = t.y;
+    $("#u-m").textContent = t.m;
+    $("#u-d").textContent = t.d;
+    $("#u-h").textContent = t.h;
+    $("#u-i").textContent = t.i;
+    $("#u-s").textContent = t.s;
+    var total = Math.floor((now - CONFIG.met) / 864e5);
+    $("#totalDays").textContent = total.toLocaleString("en-US") + " days, and I would do every one of them again.";
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  /* ---- timeline ---- */
+  $("#timeline").innerHTML = MILESTONES.map(function (m, i) {
+    var has = typeof m.photo === "string";
+    return '<li class="item' + (has ? " has-photo" : "") + (m.today ? " today" : "") + '">' +
+      '<span class="node">' + HEART + '</span>' +
+      '<div class="body"><div class="when">' + esc(m.date) + '</div><h3>' + esc(m.title) + '</h3><p>' + esc(m.text) + '</p></div>' +
+      (has ? '<figure class="polaroid">' + media(m.photo, m.title, 22 + i * 5) + '<figcaption>' + esc(m.cap || "") + '</figcaption></figure>' : "") +
+      '</li>';
+  }).join("");
+
+  /* ---- gallery ---- */
+  $("#gallery").innerHTML = GALLERY.map(function (g, i) {
+    var cls = "tile" + (i % 5 === 0 ? " tall" : "") + (i % 7 === 3 ? " wide" : "");
+    return '<button class="' + cls + '" type="button" data-i="' + i + '" aria-label="Open photo: ' + esc(g.caption) + '">' +
+      media(g.src, g.caption, 18 + (i * 4) % 28) + '<span class="cap">' + esc(g.caption) + '</span></button>';
+  }).join("");
+
+  /* ---- letter ---- */
+  $("#letterCard").innerHTML = LETTER.map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("") +
+    '<div class="sign-lead">Always yours</div><div class="sign">' + esc(CONFIG.yourName) + "</div>";
+
+  /* ---- smooth scroll ---- */
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  $("#seeStory").addEventListener("click", function () {
+    $("#story").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+  });
+
+  /* ---- lightbox ---- */
+  var lb = $("#lb"), lbFig = $("#lbFig"), cur = 0, lastFocus = null, touchX = null;
+  function show(i) {
+    cur = (i + GALLERY.length) % GALLERY.length;
+    var g = GALLERY[cur];
+    lbFig.innerHTML = (g.src ? '<img src="' + esc(g.src) + '" alt="' + esc(g.caption) + '">'
+                             : '<div class="ph" style="--p:' + (24 + (cur * 4) % 28) + '">' + HEART + '</div>') +
+      "<figcaption>" + esc(g.caption) + "</figcaption>";
+    $("#lbCount").textContent = (cur + 1) + " / " + GALLERY.length;
+  }
+  function openLb(i) {
+    lastFocus = document.activeElement;
+    show(i);
+    lb.hidden = false;
+    document.body.style.overflow = "hidden";
+    $("#lbClose").focus();
+  }
+  function closeLb() {
+    lb.hidden = true;
+    document.body.style.overflow = "";
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  $("#gallery").addEventListener("click", function (e) {
+    var t = e.target.closest(".tile");
+    if (t) openLb(parseInt(t.getAttribute("data-i"), 10));
+  });
+  $("#lbClose").addEventListener("click", closeLb);
+  $("#lbPrev").addEventListener("click", function () { show(cur - 1); });
+  $("#lbNext").addEventListener("click", function () { show(cur + 1); });
+  lb.addEventListener("click", function (e) { if (e.target === lb) closeLb(); });
+  lb.addEventListener("touchstart", function (e) { touchX = e.touches[0].clientX; }, { passive: true });
+  lb.addEventListener("touchend", function (e) {
+    if (touchX == null) return;
+    var dx = e.changedTouches[0].clientX - touchX;
+    touchX = null;
+    if (Math.abs(dx) > 50) show(cur + (dx < 0 ? 1 : -1));
+  });
+  document.addEventListener("keydown", function (e) {
+    if (lb.hidden) return;
+    if (e.key === "Escape") closeLb();
+    else if (e.key === "ArrowLeft") show(cur - 1);
+    else if (e.key === "ArrowRight") show(cur + 1);
+  });
+
+  /* ---- flower sprites: seven kinds of flowers, drawn once and reused everywhere ---- */
+  var SPR = [];
+  (function () {
+    var S = 128, TAU = Math.PI * 2;
+    function sprite(draw) {
+      var cv = document.createElement("canvas"); cv.width = S; cv.height = S;
+      var c = cv.getContext("2d"); c.translate(S / 2, S / 2); draw(c, S * 0.46); return cv;
+    }
+    function dot(c, x, y, r, col) { c.fillStyle = col; c.beginPath(); c.arc(x, y, r, 0, TAU); c.fill(); }
+    function rose(col, dark) {
+      return sprite(function (c, r) {
+        for (var i = 0; i < 6; i++) { dot(c, Math.cos(i * TAU / 6) * r * 0.58, Math.sin(i * TAU / 6) * r * 0.58, r * 0.44, col); }
+        dot(c, 0, 0, r * 0.78, col);
+        c.strokeStyle = dark; c.lineWidth = r * 0.07; c.lineCap = "round";
+        for (var k = 1; k <= 4; k++) { c.beginPath(); c.arc(0, 0, r * (0.74 - k * 0.15), k * 1.3, k * 1.3 + 4.2); c.stroke(); }
+        dot(c, 0, 0, r * 0.07, dark);
+      });
+    }
+    function tulip(col, hi) {
+      return sprite(function (c, r) {
+        c.fillStyle = col;
+        c.beginPath();
+        c.moveTo(-r * 0.6, r * 0.1);
+        c.quadraticCurveTo(-r * 0.8, -r * 0.8, -r * 0.3, -r * 0.98);
+        c.quadraticCurveTo(0, -r * 0.55, r * 0.3, -r * 0.98);
+        c.quadraticCurveTo(r * 0.8, -r * 0.8, r * 0.6, r * 0.1);
+        c.quadraticCurveTo(0, r * 0.9, -r * 0.6, r * 0.1);
+        c.closePath(); c.fill();
+        c.fillStyle = hi; c.globalAlpha = 0.75;
+        c.beginPath(); c.moveTo(0, -r * 0.62); c.quadraticCurveTo(r * 0.32, -r * 0.1, 0, r * 0.62); c.quadraticCurveTo(-r * 0.32, -r * 0.1, 0, -r * 0.62); c.fill();
+        c.globalAlpha = 1;
+      });
+    }
+    function daisy() {
+      return sprite(function (c, r) {
+        c.fillStyle = "#fbf5ee";
+        for (var i = 0; i < 14; i++) { c.save(); c.rotate(i * TAU / 14); c.beginPath(); c.ellipse(0, -r * 0.64, r * 0.13, r * 0.36, 0, 0, TAU); c.fill(); c.restore(); }
+        dot(c, 0, 0, r * 0.27, "#e9a91f"); dot(c, 0, 0, r * 0.17, "#f6c443");
+      });
+    }
+    function sakura(col, deep) {
+      return sprite(function (c, r) {
+        for (var i = 0; i < 5; i++) {
+          c.save(); c.rotate(i * TAU / 5);
+          c.fillStyle = col; c.beginPath(); c.ellipse(0, -r * 0.55, r * 0.38, r * 0.5, 0, 0, TAU); c.fill();
+          c.globalCompositeOperation = "destination-out"; c.beginPath(); c.arc(0, -r * 1.02, r * 0.13, 0, TAU); c.fill();
+          c.restore();
+        }
+        c.strokeStyle = deep; c.lineWidth = r * 0.04; c.lineCap = "round";
+        for (var j = 0; j < 8; j++) {
+          var a = j * TAU / 8;
+          c.beginPath(); c.moveTo(0, 0); c.lineTo(Math.cos(a) * r * 0.3, Math.sin(a) * r * 0.3); c.stroke();
+          dot(c, Math.cos(a) * r * 0.32, Math.sin(a) * r * 0.32, r * 0.04, deep);
+        }
+        dot(c, 0, 0, r * 0.1, deep);
+      });
+    }
+    function sunflower() {
+      return sprite(function (c, r) {
+        for (var ring = 0; ring < 2; ring++) {
+          c.fillStyle = ring ? "#e8a418" : "#f6c13a";
+          for (var i = 0; i < 18; i++) { c.save(); c.rotate((i + ring * 0.5) * TAU / 18); c.beginPath(); c.ellipse(0, -r * (0.74 - ring * 0.06), r * 0.12, r * 0.3, 0, 0, TAU); c.fill(); c.restore(); }
+        }
+        dot(c, 0, 0, r * 0.42, "#4a2a14");
+        for (var k = 1; k < 34; k++) { var a = k * 2.39996, d = r * 0.38 * Math.sqrt(k / 34); dot(c, Math.cos(a) * d, Math.sin(a) * d, r * 0.032, "#8a5a2a"); }
+      });
+    }
+    function pointed(c, len, wid) {
+      c.beginPath(); c.moveTo(0, 0); c.quadraticCurveTo(wid, -len * 0.5, 0, -len); c.quadraticCurveTo(-wid, -len * 0.5, 0, 0); c.fill();
+    }
+    function lotus(n, col, inner, tip) {
+      return sprite(function (c, r) {
+        [[1, col, 0], [0.74, inner, 0.5], [0.48, tip, 0]].forEach(function (L) {
+          c.fillStyle = L[1];
+          for (var i = 0; i < n; i++) { c.save(); c.rotate((i + L[2]) * TAU / n); pointed(c, r * L[0], r * L[0] * (n === 6 ? 0.34 : 0.26)); c.restore(); }
+        });
+        dot(c, 0, 0, r * 0.1, "#f2b632");
+      });
+    }
+    SPR = [
+      rose("#d9355a", "#a8213f"), rose("#f08aa0", "#c9526c"), rose("#fff0ec", "#e3b3aa"),
+      tulip("#f27a8f", "#ffd0d8"), tulip("#f7c14d", "#fff0b8"), tulip("#e8465f", "#ff9aac"),
+      daisy(), sakura("#f8c8d6", "#c94b73"), sakura("#f4b0c4", "#b83a64"),
+      sunflower(), lotus(8, "#f6a9c4", "#fbd0e0", "#ffffff"), lotus(6, "#ff8fb5", "#ffc2d8", "#fff3f7")
+    ];
+  })();
+
+  /* ---- drifting flowers behind every page ---- */
+  (function () {
+    var cv = $("#petals"), c = cv.getContext("2d"), W = 0, H = 0, items = [], last = 0;
+    function make(initial) {
+      return { x: Math.random() * W, y: initial ? Math.random() * H : -40, r: 14 + Math.random() * 16, vy: 0.25 + Math.random() * 0.5,
+               vx: -0.15 + Math.random() * 0.3, rot: Math.random() * 6.28, vr: (Math.random() - 0.5) * 0.012,
+               a: 0.22 + Math.random() * 0.3, ph: Math.random() * 6.28, spr: SPR[Math.floor(Math.random() * SPR.length)] };
+    }
+    function resize() {
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = window.innerWidth; H = window.innerHeight;
+      cv.width = W * dpr; cv.height = H * dpr;
+      c.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var n = Math.max(16, Math.min(34, Math.round(W * H / 26000)));
+      items = []; for (var i = 0; i < n; i++) items.push(make(true));
+    }
+    function frame(now, animate) {
+      var dt = last ? Math.min(2.5, (now - last) / 16.667) : 1; last = now;
+      c.clearRect(0, 0, W, H);
+      for (var i = 0; i < items.length; i++) {
+        var p = items[i];
+        if (animate) {
+          p.ph += 0.01 * dt; p.y += p.vy * dt; p.x += (p.vx + Math.sin(p.ph) * 0.25) * dt; p.rot += p.vr * dt;
+          if (p.y > H + 40) { var q = make(false); items[i] = p = q; }
+        }
+        c.save(); c.translate(p.x, p.y); c.rotate(p.rot); c.globalAlpha = p.a;
+        c.drawImage(p.spr, -p.r, -p.r, p.r * 2, p.r * 2); c.restore();
+      }
+      if (animate) requestAnimationFrame(function (t) { frame(t, true); });
+    }
+    resize();
+    if (reduce) frame(0, false); else requestAnimationFrame(function (t) { frame(t, true); });
+    window.addEventListener("resize", function () { resize(); if (reduce) frame(0, false); });
+  })();
+
+  /* ---- background music: a soft music-box "Happy Birthday" tune, made in the browser (no lyrics) ---- */
+  var ctx = null, master = null, send = null, timer = null, loopStart = 0, evIdx = 0, playing = false, sleepTimer = null;
+  var BEAT = 60 / 64;      /* slow waltz */
+  var LOOP_BEATS = 27;     /* 8 bars of 3 beats, then a short rest before it repeats */
+  var PHRASES = [
+    [[67, 0.75], [67, 0.25], [69, 1], [67, 1], [72, 1], [71, 2]],
+    [[67, 0.75], [67, 0.25], [69, 1], [67, 1], [74, 1], [72, 2]],
+    [[67, 0.75], [67, 0.25], [79, 1], [76, 1], [72, 1], [71, 1], [69, 1]],
+    [[77, 0.75], [77, 0.25], [76, 1], [72, 1], [74, 1], [72, 2]]
+  ];
+  var EVENTS = [];
+  (function () {
+    var b = 0;
+    PHRASES.forEach(function (ph) { ph.forEach(function (n) { EVENTS.push({ b: b, k: "mel", n: n[0], d: n[1] }); b += n[1]; }); });
+    var chords = [[48, [52, 55]], [43, [50, 59]], [43, [50, 59]], [48, [52, 55]], [48, [52, 55]], [41, [57, 60]], [41, [57, 60]], [48, [52, 55]]];
+    chords.forEach(function (c, i) {
+      var s = i * 3;
+      EVENTS.push({ b: s, k: "bass", n: c[0] });
+      EVENTS.push({ b: s, k: "pad", notes: [c[0], c[1][0], c[1][1]] });
+      EVENTS.push({ b: s + 1, k: "chord", notes: c[1] });
+      EVENTS.push({ b: s + 2, k: "chord", notes: c[1] });
+    });
+    EVENTS.sort(function (x, y) { return x.b - y.b; });
+  })();
+  function hz(n) { return 440 * Math.pow(2, (n - 69) / 12); }
+  function impulse(sec) {
+    var len = Math.floor(ctx.sampleRate * sec), buf = ctx.createBuffer(2, len, ctx.sampleRate);
+    for (var ch = 0; ch < 2; ch++) {
+      var d = buf.getChannelData(ch);
+      for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.6);
+    }
+    return buf;
+  }
+  function build() {
+    var AC = window.AudioContext || window.webkitAudioContext;
+    ctx = new AC();
+    master = ctx.createGain(); master.gain.value = 0;
+    var comp = ctx.createDynamicsCompressor();
+    master.connect(comp); comp.connect(ctx.destination);
+    send = ctx.createGain(); send.gain.value = 0.55;
+    var conv = ctx.createConvolver(); conv.buffer = impulse(3.6);
+    var wetOut = ctx.createGain(); wetOut.gain.value = 0.9;
+    send.connect(conv); conv.connect(wetOut); wetOut.connect(master);
+  }
+  function pluck(f, t, v, d) {
+    var o = ctx.createOscillator(), o2 = ctx.createOscillator(), g = ctx.createGain(), g2 = ctx.createGain();
+    o.type = "triangle"; o2.type = "sine";
+    o.frequency.value = f; o2.frequency.value = f * 2; g2.gain.value = 0.22;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(v, t + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0008, t + d);
+    o.connect(g); o2.connect(g2); g2.connect(g); g.connect(master); g.connect(send);
+    o.start(t); o2.start(t); o.stop(t + d + 0.05); o2.stop(t + d + 0.05);
+  }
+  function box(f, t, v, d) {
+    [[1, 1, d], [2, 0.32, d * 0.6], [3, 0.12, d * 0.35]].forEach(function (p) {
+      var o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = "sine"; o.frequency.value = f * p[0];
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.linearRampToValueAtTime(v * p[1], t + 0.006);
+      g.gain.exponentialRampToValueAtTime(0.0008, t + p[2]);
+      o.connect(g); g.connect(master); g.connect(send);
+      o.start(t); o.stop(t + p[2] + 0.05);
+    });
+  }
+  function pad(notes, t, d) {
+    notes.forEach(function (n) {
+      [-6, 6].forEach(function (cents) {
+        var o = ctx.createOscillator(), g = ctx.createGain();
+        o.type = "sine"; o.frequency.value = hz(n + 12); o.detune.value = cents;
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.linearRampToValueAtTime(0.022, t + 0.9);
+        g.gain.linearRampToValueAtTime(0.0001, t + d + 1.2);
+        o.connect(g); g.connect(master); g.connect(send);
+        o.start(t); o.stop(t + d + 1.3);
+      });
+    });
+  }
+  function playEvent(e, t) {
+    if (e.k === "mel") box(hz(e.n), t, 0.2, Math.max(1.6, e.d * BEAT * 2.2));
+    else if (e.k === "bass") pluck(hz(e.n), t, 0.1, 2.4);
+    else if (e.k === "chord") e.notes.forEach(function (n, i) { pluck(hz(n), t + i * 0.012, 0.05, 1.5); });
+    else if (e.k === "pad") pad(e.notes, t, BEAT * 3);
+  }
+  function schedule() {
+    for (var guard = 0; guard < 64; guard++) {
+      var e = EVENTS[evIdx], t = loopStart + e.b * BEAT;
+      if (t > ctx.currentTime + 0.35) break;
+      playEvent(e, Math.max(t, ctx.currentTime));
+      evIdx++;
+      if (evIdx >= EVENTS.length) { evIdx = 0; loopStart += LOOP_BEATS * BEAT; }
+    }
+  }
+  function setPlaying(on) {
+    playing = on;
+    document.querySelectorAll("[data-music]").forEach(function (b) { b.setAttribute("aria-pressed", on ? "true" : "false"); });
+    $("#musicFab").setAttribute("aria-label", on ? "Pause music" : "Play music");
+    document.querySelectorAll("[data-music-label]").forEach(function (l) { l.textContent = on ? "Pause the music" : "Play our music"; });
+  }
+  function play() {
+    try {
+      if (!ctx) build();
+      clearTimeout(sleepTimer);
+      ctx.resume();
+      loopStart = ctx.currentTime + 0.25; evIdx = 0;
+      clearInterval(timer);
+      timer = setInterval(schedule, 100);
+      master.gain.cancelScheduledValues(ctx.currentTime);
+      master.gain.setValueAtTime(master.gain.value, ctx.currentTime);
+      master.gain.linearRampToValueAtTime(0.55, ctx.currentTime + 2.5);
+      setPlaying(true);
+    } catch (err) { setPlaying(false); }
+  }
+  function pause() {
+    if (!ctx) return;
+    master.gain.cancelScheduledValues(ctx.currentTime);
+    master.gain.setValueAtTime(master.gain.value, ctx.currentTime);
+    master.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.7);
+    setPlaying(false);
+    sleepTimer = setTimeout(function () { clearInterval(timer); ctx.suspend(); }, 900);
+  }
+  if (CONFIG.music) {
+    document.querySelectorAll("[data-music]").forEach(function (b) {
+      b.addEventListener("click", function () { playing ? pause() : play(); });
+    });
+  } else {
+    document.querySelectorAll("[data-music]").forEach(function (b) { b.hidden = true; });
+  }
+  /* ---- celebration: cinematic poppers, flowers and sparkle ---- */
+  var party = { cv: $("#partyCanvas"), c: null, items: [], run: false, rainOn: false, rainRate: 0.05, W: 0, H: 0,
+                started: false, intro: false, slow: false, t0: 0, last: 0 };
+  var CONF = ["#eaa6a3", "#ecc994", "#f4e7e0", "#d9667f", "#c9a7e8", "#f7c6d0", "#8fd3c8", "#f2a65a"];
+  var GOLD = ["#ecc994", "#f7e2b0", "#fff2cc", "#ffd77a"];
+  function rnd(a, b) { return a + Math.random() * (b - a); }
+  function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+  function partySize() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    party.W = window.innerWidth; party.H = window.innerHeight;
+    party.cv.width = party.W * dpr; party.cv.height = party.H * dpr;
+    party.c.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function partyInit() {
+    if (!party.c) { party.c = party.cv.getContext("2d"); window.addEventListener("resize", partySize); }
+    partySize();
+  }
+  function addP(p) { if (party.items.length < 700) party.items.push(p); }
+  function later(ms, fn) { setTimeout(fn, ms); }
+  function shake(px) {
+    if (reduce) return;
+    var el = $("#gateParty");
+    el.style.setProperty("--sh", px + "px");
+    el.classList.remove("shake"); void el.offsetWidth; el.classList.add("shake");
+  }
+  function pop() {
+    if (!ctx) return;
+    try {
+      var len = Math.floor(ctx.sampleRate * 0.18), buf = ctx.createBuffer(1, len, ctx.sampleRate), d = buf.getChannelData(0);
+      for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 4);
+      var src = ctx.createBufferSource(), bp = ctx.createBiquadFilter(), g = ctx.createGain();
+      bp.type = "bandpass"; bp.frequency.value = 1600; bp.Q.value = 0.7;
+      g.gain.value = 0.5;
+      src.buffer = buf; src.connect(bp); bp.connect(g); g.connect(ctx.destination); src.start();
+    } catch (err) { /* sound is optional */ }
+  }
+  function boom() {
+    if (!ctx) return;
+    try {
+      var t = ctx.currentTime, o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = "sine"; o.frequency.setValueAtTime(120, t); o.frequency.exponentialRampToValueAtTime(36, t + 0.7);
+      g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.5, t + 0.02); g.gain.exponentialRampToValueAtTime(0.001, t + 1.1);
+      o.connect(g); g.connect(ctx.destination); o.start(t); o.stop(t + 1.2);
+    } catch (err) { /* sound is optional */ }
+  }
+  function shimmer() {
+    if (!ctx || !send) return;
+    try {
+      var t = ctx.currentTime + 0.05;
+      [84, 88, 91, 96, 100].forEach(function (n, i) { pluck(hz(n), t + i * 0.09, 0.07, 2.2); });
+    } catch (err) { /* sound is optional */ }
+  }
+  function decorate(p, r) {
+    if (r < 0.42) { p.shape = "conf"; p.w = rnd(6, 13); p.h = rnd(3, 8); p.col = pick(CONF); }
+    else if (r < 0.52) { p.shape = "strm"; p.col = pick(CONF); }
+    else if (r < 0.62) { p.shape = "spark"; p.r = rnd(5, 11); p.col = pick(GOLD); }
+    else { p.shape = "flower"; p.spr = pick(SPR); p.r = rnd(13, 30); }
+  }
+  function burstCorner(side, n, power) {
+    var g = 0.26, x0 = side < 0 ? 0 : party.W, y0 = party.H;
+    for (var i = 0; i < n; i++) {
+      var v = Math.sqrt(2 * g * party.H * rnd(0.3, 0.95)) * power, th = rnd(0.12, 0.95);
+      var p = { kind: "phys", x: x0, y: y0, vx: Math.sin(th) * v * (side < 0 ? 1 : -1), vy: -Math.cos(th) * v, g: g, drag: 0.985,
+                rot: rnd(0, 6.28), vr: rnd(-0.2, 0.2), flip: rnd(0, 6.28), ph: rnd(0, 6.28) };
+      decorate(p, Math.random());
+      addP(p);
+    }
+  }
+  function fountain(n) {
+    var g = 0.26;
+    for (var i = 0; i < n; i++) {
+      var v = Math.sqrt(2 * g * party.H * rnd(0.35, 1)) * 1.05, th = rnd(-0.75, 0.75);
+      var p = { kind: "phys", x: party.W / 2, y: party.H, vx: Math.sin(th) * v, vy: -Math.cos(th) * v, g: g, drag: 0.985,
+                rot: rnd(0, 6.28), vr: rnd(-0.2, 0.2), flip: rnd(0, 6.28), ph: rnd(0, 6.28) };
+      decorate(p, Math.random());
+      addP(p);
+    }
+  }
+  function curtain(n) {
+    for (var i = 0; i < n; i++) {
+      addP({ kind: "fall", shape: "flower", spr: pick(SPR), r: rnd(14, 34), x: rnd(0, party.W), y: -rnd(30, 450),
+             vx: rnd(-0.3, 0.3), vy: rnd(1.5, 3.4), ph: rnd(0, 6.28), rot: rnd(0, 6.28), vr: rnd(-0.03, 0.03) });
+    }
+  }
+  function sparkle(n) {
+    for (var i = 0; i < n; i++) {
+      addP({ kind: "fall", shape: "spark", col: pick(GOLD), r: rnd(4, 10), x: rnd(0, party.W), y: rnd(-100, party.H * 0.6),
+             vx: rnd(-0.2, 0.2), vy: rnd(0.4, 1.1), ph: rnd(0, 6.28), rot: rnd(0, 6.28), vr: rnd(-0.02, 0.02) });
+    }
+  }
+  function scatter(n) {
+    for (var i = 0; i < n; i++) {
+      addP({ kind: "fall", shape: "flower", spr: pick(SPR), r: rnd(12, 26), x: rnd(0, party.W), y: rnd(0, party.H),
+             vx: rnd(-0.3, 0.3), vy: rnd(0.5, 1.4), ph: rnd(0, 6.28), rot: rnd(0, 6.28), vr: rnd(-0.02, 0.02), a: 0.75 });
+    }
+  }
+  function partyFrame(now) {
+    if (!party.run) return;
+    var c = party.c, dt = party.last ? Math.min(2.5, (now - party.last) / 16.667) : 1, i, p, k;
+    party.last = now;
+    var ts = party.slow ? Math.min(1, 0.5 + 0.5 * (now - party.t0) / 2200) : 1;   /* slow motion at the start */
+    k = dt * ts;
+    c.clearRect(0, 0, party.W, party.H);
+    if (party.rainOn && party.items.length < (party.intro || party.rainRate < 0.2 ? 90 : 700) && Math.random() < party.rainRate * dt) {
+      addP({ kind: "fall", shape: "flower", spr: pick(SPR), r: rnd(12, 28), x: rnd(0, party.W), y: -30, vx: rnd(-0.3, 0.3),
+             vy: rnd(1.0, 2.6), ph: rnd(0, 6.28), rot: rnd(0, 6.28), vr: rnd(-0.03, 0.03), a: party.intro ? 0.75 : 1 });
+    }
+    for (i = party.items.length - 1; i >= 0; i--) {
+      p = party.items[i];
+      if (p.kind === "phys") {
+        var dr = Math.pow(p.drag, k);
+        p.vx *= dr; p.vy = p.vy * dr + p.g * k; p.x += p.vx * k; p.y += p.vy * k; p.flip += 0.15 * k;
+      } else {
+        p.x += (p.vx + Math.sin(p.ph) * 0.8) * k; p.y += p.vy * k;
+      }
+      p.ph += 0.03 * k; p.rot += p.vr * k;
+      if (p.y > party.H + 60 || p.x < -80 || p.x > party.W + 80) { party.items.splice(i, 1); continue; }
+      c.save(); c.translate(p.x, p.y); c.rotate(p.rot);
+      if (p.a != null) c.globalAlpha = p.a;
+      if (p.shape === "flower") {
+        c.drawImage(p.spr, -p.r, -p.r, p.r * 2, p.r * 2);
+      } else if (p.shape === "strm") {
+        c.fillStyle = p.col; c.fillRect(-1.5, -14, 3, 28 * Math.abs(Math.cos(p.flip)));
+      } else if (p.shape === "spark") {
+        c.globalAlpha = (p.a == null ? 1 : p.a) * (0.45 + 0.55 * Math.abs(Math.sin(p.ph * 3)));
+        c.fillStyle = p.col; c.beginPath();
+        for (var s = 0; s < 8; s++) { var rr = s % 2 ? p.r * 0.25 : p.r, an = s * Math.PI / 4; c.lineTo(Math.cos(an) * rr, Math.sin(an) * rr); }
+        c.closePath(); c.fill();
+      } else {
+        c.fillStyle = p.col; var sc = Math.cos(p.flip); c.fillRect(-p.w / 2, -p.h / 2 * sc, p.w, p.h * sc);
+      }
+      c.restore();
+    }
+    if (!party.rainOn && !party.items.length) { party.run = false; return; }
+    requestAnimationFrame(partyFrame);
+  }
+  function showtime() {
+    boom(); shimmer(); shake(8);
+    burstCorner(-1, 120, 1); burstCorner(1, 120, 1); pop(); later(80, pop);
+    later(450, function () { curtain(70); sparkle(60); shimmer(); });
+    later(900, function () { fountain(150); pop(); shake(6); });
+    later(1500, function () { burstCorner(-1, 130, 1.15); burstCorner(1, 130, 1.15); pop(); later(90, pop); shake(7); });
+    later(2300, function () { curtain(90); sparkle(90); shimmer(); });
+    later(3000, function () { fountain(180); burstCorner(-1, 100, 1.2); burstCorner(1, 100, 1.2); boom(); pop(); shake(10); });
+    later(3800, function () { $("#gate").classList.add("calm"); party.rainRate = 0.1; });
+    later(8000, function () { party.rainRate = 0.04; });
+  }
+  function startIntroRain() {
+    if (reduce) return;
+    partyInit();
+    party.intro = true; party.rainOn = true; party.rainRate = 0.05; party.slow = false; party.run = true; party.last = 0;
+    scatter(14);
+    requestAnimationFrame(partyFrame);
+  }
+  function startParty() {
+    if (party.started) return;
+    party.started = true;
+    $("#gateIntro").hidden = true;
+    $("#gateParty").hidden = false;
+    $("#partyDate").textContent = CONFIG.birthdayLabel;
+    $("#gate").classList.add("party-on");
+    later(reduce ? 600 : 4200, function () { var b = $("#proceedBtn"); b.hidden = false; b.focus(); });
+    if (reduce) return;
+    partyInit();
+    party.intro = false; party.rainOn = true; party.rainRate = 0.06; party.slow = true; party.t0 = performance.now();
+    if (!party.run) { party.run = true; party.last = 0; requestAnimationFrame(partyFrame); }
+    showtime();
+  }
+
+  /* ---- opening screen: the tap starts the music ---- */
+  var gate = $("#gate");
+  function openGate() {
+    if (gate.hidden) return;
+    gate.classList.add("gone");
+    document.body.style.overflow = "";
+    setTimeout(function () { gate.hidden = true; party.run = false; }, reduce ? 0 : 950);
+  }
+  if (!CONFIG.music) {
+    gate.hidden = true;
+  } else {
+    document.body.style.overflow = "hidden";
+    $("#gateBtn").addEventListener("click", function () { if (!playing) play(); startParty(); });
+    $("#proceedBtn").addEventListener("click", function () { party.rainOn = false; openGate(); window.scrollTo(0, 0); });
+    $("#gateBtn").focus();
+    startIntroRain();
+    /* Some browsers allow sound right away. If so, start it and skip the screen. */
+    try {
+      build();
+      if (ctx.state === "running") { play(); startParty(); }
+    } catch (err) { /* the tap on the button will start it instead */ }
+  }
+
+  } /* end start */
+
+  boot(JSON.parse(document.getElementById("storyFallback").textContent));
+})();
+</script>
+</body>
+</html>
