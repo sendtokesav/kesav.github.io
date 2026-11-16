@@ -12,7 +12,7 @@ body { margin: 0; }
 img { max-width: 100%; }
 [hidden] { display: none !important; }
 </style>
-<title>Happy Birthday, BINITA</title>
+<title>Happy Birthday, Binita</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap">
 <style>
 :root {
@@ -390,6 +390,9 @@ section { margin-top: 112px; }
   .gate.party-on .flash { display: none; }
 }
 
+/* ---------- Fireworks on the main page ---------- */
+#fireworks { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
 /* ---------- Floating music control ---------- */
 .music {
   position: fixed;
@@ -428,6 +431,7 @@ section { margin-top: 112px; }
 </svg>
 
 <canvas id="petals" aria-hidden="true"></canvas>
+<canvas id="fireworks" aria-hidden="true"></canvas>
 
 <button class="music" id="musicFab" data-music type="button" aria-pressed="false" aria-label="Play music">
   <svg class="note" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l11-2v12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.5" fill="currentColor"/><circle cx="17.5" cy="16" r="2.5" fill="currentColor"/></svg>
@@ -489,7 +493,7 @@ section { margin-top: 112px; }
       <h2>A note for you</h2>
     </div>
     <div class="letter-card" id="letterCard"></div>
-    <p class="foot">Made with love, on your birthday.</p>
+    <p class="foot">Made with love, on your birthday - (Only time will let you know).</p>
   </section>
 </main>
 
@@ -534,7 +538,7 @@ section { margin-top: 112px; }
 <script type="application/json" id="storyFallback">
 {
   "config": {
-   "herName": "SANU",
+    "herName": "SANU",
     "yourName": "Kesav",
     "birthdayLabel": "22 November 2026 / 06 Mangshir 2083",
     "met": "2026-08-28T18:31:00",
@@ -544,7 +548,7 @@ section { margin-top: 112px; }
     {
       "date": "28 August 2026",
       "title": "How it Started",
-      "text": "The first converstation we ever had.",
+      "text": "The first converstation we ever had. It all started with little to no hope of your reply. But things turned out the other way around and here we are.",
       "photo": "photos/start.jpeg",
       "cap": "The Start"
     },
@@ -556,7 +560,7 @@ section { margin-top: 112px; }
       "cap": "Day one - We did not click"
     },
     {
-     "date": "12 September 2026",
+      "date": "12 September 2026",
       "title": "Our first Official date",
       "text": "Good Weather, wonderful evening. We stayed until day faded in to night. Just as we talked about going home, it rained. It felt like the universe wanted us to stay a bit longer.",
       "photo": "photos/second.jpeg",
@@ -570,14 +574,14 @@ section { margin-top: 112px; }
       "cap": "NO Photo"
     },
     {
-     "date": "09 November 2026",
+      "date": "09 November 2026",
       "title": "Meeting Both Family for Marriage",
       "text": "The Day. Feeling Excited, Happy, Anxious, Releved. Totally overwhelmed by the mix of emotions.",
       "photo": "photos/marriage.jpeg",
       "cap": "Together"
     },
     {
-       "date": "10 November 2026",
+      "date": "10 November 2026",
       "title": "The Next Day Was ours",
       "text": "Bidesh Gako Sangai. Bg with stuffs. Done things togeher, still felt like the time ran out quickly.",
       "photo": "photos/bidesh.jpeg",
@@ -586,14 +590,14 @@ section { margin-top: 112px; }
     {
       "date": "Today, 22 November 2026 / 06 Mangshir 2083",
       "title": "Your birthday",
-      "text": "You’ve made my life softer, warmer, and a thousand times happier. Happy birthday, my love -- thank you for being you.",
+      "text": "You've made my life softer, warmer, and a thousand times happier. Happy birthday, my love -- thank you for being you.",
       "photo": "photos/birthday.jpeg",
       "cap": "Date Expired",
       "today": true
     }
   ],
   "gallery": [
-    {
+   {
       "src": "photos/1.jpeg",
       "caption": "Smile"
     },
@@ -636,8 +640,7 @@ section { margin-top: 112px; }
     "When I think about what I am most grateful for, it is never the big things. It is how easy you make ordinary days, how effortless things feel around you, how simple the life seems and it is all that I want to keep.",
     "On your birthday I wish you more than cake and candles. I wish you slow mornings, a year full of things that make you proud, and every dream you carry quietly to come a little closer. Wherever it takes you, I will be right beside you, cheering the loudest, celebrating the hardest.",
     "Thank you for being a part of me. I love you more today than when this page began, and tomorrow I expect to love you a little more every day.",
-    "(Let’s love each other the hardest when it is harder to love at all)"
-
+    "(Let's love each other the hardest when it is harder to love at all)"
     ]
 }
 </script>
@@ -1196,6 +1199,153 @@ section { margin-top: 112px; }
     showtime();
   }
 
+  /* ---- realistic fireworks behind the main page ---- */
+  var fw = { cv: $("#fireworks"), c: null, W: 0, H: 0, rockets: [], sparks: [], flashes: [], run: false, started: false, last: 0, next: 0 };
+  var FW_TYPES = ["peony", "peony", "chrys", "chrys", "willow", "ring", "heart", "heart", "palm", "crossette", "double"];
+  function fwSize() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    fw.W = window.innerWidth; fw.H = window.innerHeight;
+    fw.cv.width = fw.W * dpr; fw.cv.height = fw.H * dpr;
+    fw.c.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function fwRand(a, b) { return a + Math.random() * (b - a); }
+  function fwLaunch() {
+    fw.rockets.push({ x: fwRand(fw.W * 0.14, fw.W * 0.86), y: fw.H + 10, ty: fwRand(fw.H * 0.14, fw.H * 0.46),
+                      vy: -fwRand(7.5, 10.5), hue: Math.floor(fwRand(0, 360)), t: FW_TYPES[Math.floor(Math.random() * FW_TYPES.length)] });
+  }
+  function fwSpark(x, y, vx, vy, o) {
+    o = o || {};
+    fw.sparks.push({ x: x, y: y, px: x, py: y, vx: vx, vy: vy, life: 1, decay: o.decay || 0.012, hue: o.hue || 0, sat: o.sat == null ? 100 : o.sat,
+                     size: o.size || 2, drag: o.drag || 0.984, grav: o.grav == null ? 0.045 : o.grav, tw: !!o.tw, glitter: !!o.glitter,
+                     split: !!o.split, emit: !!o.emit, warm: !!o.warm });
+  }
+  function fwExplode(x, y, hue, type) {
+    var i, n, a, z, k, R, t, hx, hy, rot, tilt, h2 = (hue + 140 + fwRand(-25, 25)) % 360;
+    fw.flashes.push({ x: x, y: y, life: 1, hue: hue });
+    if (type === "peony") {
+      n = 120; R = fwRand(4.3, 5.1);
+      for (i = 0; i < n; i++) {
+        z = fwRand(-1, 1); a = fwRand(0, 6.2832); k = Math.sqrt(1 - z * z);
+        fwSpark(x, y, Math.cos(a) * k * R, Math.sin(a) * k * R, { hue: hue + fwRand(-8, 8), decay: fwRand(0.011, 0.015), size: 2.1, glitter: Math.random() < 0.25 });
+      }
+    } else if (type === "chrys") {
+      n = 150; R = fwRand(3.6, 5.4);
+      for (i = 0; i < n; i++) {
+        z = fwRand(-1, 1); a = fwRand(0, 6.2832); k = Math.sqrt(1 - z * z); t = R * fwRand(0.55, 1);
+        fwSpark(x, y, Math.cos(a) * k * t, Math.sin(a) * k * t, { hue: hue + fwRand(-12, 12), decay: fwRand(0.007, 0.011), drag: 0.981, size: 1.6, tw: true });
+      }
+    } else if (type === "willow") {
+      n = 110; R = fwRand(3.2, 5);
+      for (i = 0; i < n; i++) {
+        z = fwRand(-1, 1); a = fwRand(0, 6.2832); k = Math.sqrt(1 - z * z); t = R * fwRand(0.5, 1);
+        fwSpark(x, y, Math.cos(a) * k * t, Math.sin(a) * k * t, { hue: fwRand(36, 46), sat: 90, decay: fwRand(0.0042, 0.0062), drag: 0.972, grav: 0.036, size: 1.7, tw: true, warm: true });
+      }
+    } else if (type === "ring") {
+      n = 80; R = fwRand(4.4, 5); rot = fwRand(0, 3.1416); tilt = fwRand(0.28, 1);
+      for (i = 0; i < n; i++) {
+        a = i / n * 6.2832; hx = Math.cos(a) * R; hy = Math.sin(a) * R * tilt;
+        fwSpark(x, y, hx * Math.cos(rot) - hy * Math.sin(rot), hx * Math.sin(rot) + hy * Math.cos(rot), { hue: hue, decay: 0.012, size: 2.2, grav: 0.03 });
+      }
+      for (i = 0; i < 24; i++) { a = fwRand(0, 6.2832); fwSpark(x, y, Math.cos(a) * fwRand(0.3, 1.8), Math.sin(a) * fwRand(0.3, 1.8), { hue: h2, decay: 0.018, size: 1.6 }); }
+    } else if (type === "heart") {
+      var hh = fwRand(335, 360);
+      [1, 0.55].forEach(function (sc, layer) {
+        n = layer ? 50 : 90;
+        for (i = 0; i < n; i++) {
+          t = i / n * 6.2832;
+          hx = 16 * Math.pow(Math.sin(t), 3);
+          hy = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+          fwSpark(x, y, hx * 0.3 * sc, hy * 0.3 * sc, { hue: layer ? 20 : hh, sat: layer ? 40 : 100, decay: 0.011, drag: 0.986, size: 2.4, grav: 0.025 });
+        }
+      });
+    } else if (type === "palm") {
+      n = 9; rot = fwRand(0, 6.2832);
+      for (i = 0; i < n; i++) {
+        a = rot + i / n * 6.2832 + fwRand(-0.08, 0.08); R = fwRand(4.6, 5.8);
+        fwSpark(x, y, Math.cos(a) * R, Math.sin(a) * R, { hue: fwRand(36, 48), sat: 85, decay: 0.0075, drag: 0.978, grav: 0.05, size: 3.2, emit: true, warm: true });
+      }
+    } else if (type === "crossette") {
+      n = 14; R = fwRand(3.4, 4.4);
+      for (i = 0; i < n; i++) {
+        a = i / n * 6.2832 + fwRand(-0.1, 0.1);
+        fwSpark(x, y, Math.cos(a) * R, Math.sin(a) * R, { hue: hue + fwRand(-10, 10), decay: 0.0105, size: 2.6, split: true, grav: 0.03 });
+      }
+    } else {
+      n = 100;
+      for (i = 0; i < n; i++) {
+        z = fwRand(-1, 1); a = fwRand(0, 6.2832); k = Math.sqrt(1 - z * z);
+        fwSpark(x, y, Math.cos(a) * k * 5, Math.sin(a) * k * 5, { hue: hue, decay: 0.012, size: 2.1 });
+      }
+      for (i = 0; i < 60; i++) {
+        z = fwRand(-1, 1); a = fwRand(0, 6.2832); k = Math.sqrt(1 - z * z);
+        fwSpark(x, y, Math.cos(a) * k * 2.6, Math.sin(a) * k * 2.6, { hue: h2, decay: 0.014, size: 1.9, glitter: true });
+      }
+    }
+    if (fw.sparks.length > 1500) fw.sparks.splice(0, fw.sparks.length - 1500);
+  }
+  function fwFrame(now) {
+    if (!fw.run) return;
+    if (document.hidden) { fw.last = 0; requestAnimationFrame(fwFrame); return; }
+    var c = fw.c, dt = fw.last ? Math.min(2.5, (now - fw.last) / 16.667) : 1, i, r, s, al, l;
+    fw.last = now;
+    if (now > fw.next && fw.rockets.length < 3) { fwLaunch(); fw.next = now + fwRand(900, 2200); if (Math.random() < 0.25) setTimeout(fwLaunch, 260); }
+    c.globalCompositeOperation = "destination-out";
+    c.fillStyle = "rgba(0,0,0," + Math.min(0.5, 0.15 * dt) + ")";
+    c.fillRect(0, 0, fw.W, fw.H);
+    c.globalCompositeOperation = "lighter";
+    c.lineCap = "round";
+    for (i = fw.flashes.length - 1; i >= 0; i--) {
+      var f = fw.flashes[i]; f.life -= 0.06 * dt;
+      if (f.life <= 0) { fw.flashes.splice(i, 1); continue; }
+      var rad = 40 + (1 - f.life) * 150, gr = c.createRadialGradient(f.x, f.y, 0, f.x, f.y, rad);
+      gr.addColorStop(0, "hsla(" + f.hue + ",100%,92%," + (f.life * 0.6).toFixed(3) + ")");
+      gr.addColorStop(0.35, "hsla(" + f.hue + ",100%,65%," + (f.life * 0.2).toFixed(3) + ")");
+      gr.addColorStop(1, "hsla(" + f.hue + ",100%,60%,0)");
+      c.fillStyle = gr; c.fillRect(f.x - rad, f.y - rad, rad * 2, rad * 2);
+    }
+    for (i = fw.rockets.length - 1; i >= 0; i--) {
+      r = fw.rockets[i]; r.y += r.vy * dt; r.vy *= Math.pow(0.992, dt);
+      c.fillStyle = "rgba(255,236,200,0.95)"; c.beginPath(); c.arc(r.x, r.y, 2, 0, 6.2832); c.fill();
+      fwSpark(r.x + fwRand(-1, 1), r.y, fwRand(-0.25, 0.25), fwRand(0.3, 1.1), { hue: 38, sat: 90, decay: 0.045, size: 1.3, warm: true });
+      if (r.y <= r.ty || r.vy > -2.2) { fwExplode(r.x, r.y, r.hue, r.t); fw.rockets.splice(i, 1); }
+    }
+    for (i = fw.sparks.length - 1; i >= 0; i--) {
+      s = fw.sparks[i];
+      s.px = s.x; s.py = s.y;
+      var dr = Math.pow(s.drag, dt);
+      s.vx *= dr; s.vy = s.vy * dr + s.grav * dt;
+      s.x += s.vx * dt; s.y += s.vy * dt; s.life -= s.decay * dt;
+      if (s.life <= 0) { fw.sparks.splice(i, 1); continue; }
+      if (s.split && s.life < 0.62) {
+        s.split = false;
+        var sa = Math.atan2(s.vy, s.vx), q;
+        for (q = 0; q < 4; q++) fwSpark(s.x, s.y, Math.cos(sa + q * 1.5708 + 0.4) * 2.4, Math.sin(sa + q * 1.5708 + 0.4) * 2.4, { hue: s.hue, decay: 0.022, size: 1.8, drag: 0.97 });
+        fw.sparks.splice(i, 1); continue;
+      }
+      if (s.emit && Math.random() < 0.6) fwSpark(s.x, s.y, fwRand(-0.3, 0.3), fwRand(0.1, 0.5), { hue: s.hue + 6, sat: 80, decay: 0.03, size: 1.2, warm: true });
+      al = s.life * (s.tw ? 0.45 + 0.55 * Math.random() : 1);
+      l = 52 + 38 * Math.max(0, (s.life - 0.72) / 0.28);                  /* white-hot at first, then the colour */
+      if (s.warm && s.life < 0.3) { s.hue += (24 - s.hue) * 0.05; l = 50; }  /* gold cools to an ember */
+      var sat = s.sat, wide = s.size * (0.55 + 0.45 * s.life);
+      if (s.glitter && s.life < 0.32 && Math.random() < 0.5) { l = 96; sat = 10; al = 1; }
+      c.strokeStyle = "hsla(" + s.hue + "," + sat + "%," + l + "%," + al.toFixed(3) + ")";
+      c.lineWidth = wide;
+      c.beginPath(); c.moveTo(s.px, s.py); c.lineTo(s.x, s.y); c.stroke();
+    }
+    c.globalCompositeOperation = "source-over";
+    requestAnimationFrame(fwFrame);
+  }
+  function startFireworks() {
+    if (fw.started || reduce) return;
+    fw.started = true;
+    fw.c = fw.cv.getContext("2d");
+    fwSize();
+    window.addEventListener("resize", fwSize);
+    fw.run = true; fw.next = 0;
+    requestAnimationFrame(fwFrame);
+    setTimeout(function () { fwLaunch(); setTimeout(fwLaunch, 400); }, 150);
+  }
+
   /* ---- opening screen: the tap starts the music ---- */
   var gate = $("#gate");
   function openGate() {
@@ -1203,9 +1353,11 @@ section { margin-top: 112px; }
     gate.classList.add("gone");
     document.body.style.overflow = "";
     setTimeout(function () { gate.hidden = true; party.run = false; }, reduce ? 0 : 950);
+    startFireworks();
   }
   if (!CONFIG.music) {
     gate.hidden = true;
+    startFireworks();
   } else {
     document.body.style.overflow = "hidden";
     $("#gateBtn").addEventListener("click", function () { if (!playing) play(); startParty(); });
@@ -1221,7 +1373,18 @@ section { margin-top: 112px; }
 
   } /* end start */
 
-  boot(JSON.parse(document.getElementById("storyFallback").textContent));
+  var DEFAULT_STORY = {"config": {"herName": "My Love", "yourName": "Me", "birthdayLabel": "15 November 2026", "met": "2023-02-14T18:00:00", "music": true}, "milestones": [{"date": "14 February 2023", "title": "The day we met", "text": "Something about that first conversation made time disappear. I still remember how nervous I was.", "photo": "", "cap": "Day one"}, {"date": "2 March 2023", "title": "Our first date", "text": "Terrible weather, wonderful evening. We stayed until they turned the lights off.", "photo": null}, {"date": "21 June 2023", "title": "Our first trip together", "text": "Wrong turns, good food, and far too many photos of the same view.", "photo": "", "cap": "Somewhere new"}, {"date": "15 November 2023", "title": "Your first birthday with me", "text": "I tried to plan something perfect. You laughed at me, and it was perfect anyway.", "photo": "", "cap": "Birthday no. 1"}, {"date": "9 August 2024", "title": "The day I knew", "text": "Nothing special happened that day, which is how I knew.", "photo": null}, {"date": "Today, 15 November 2026", "title": "Your birthday", "text": "Another year, and I still get excited when your name lights up my phone.", "photo": "", "cap": "Today", "today": true}], "gallery": [{"src": "", "caption": "Day one"}, {"src": "", "caption": "Coffee that lasted for hours"}, {"src": "", "caption": "Golden hour"}, {"src": "", "caption": "Our first trip"}, {"src": "", "caption": "Your laugh"}, {"src": "", "caption": "Rainy day plans"}, {"src": "", "caption": "All dressed up"}, {"src": "", "caption": "Sunday morning"}, {"src": "", "caption": "Birthday no. 1"}, {"src": "", "caption": "Today"}], "letter": ["Looking back over this page, what I notice most is how ordinary days turned into the best ones once you were in them.", "Thank you for the laughs, for your patience, for the quiet evenings and the loud ones. I do not know everything this next year will hold, but I know who I want next to me for it.", "Happy birthday, my love. Here is to many more pages."]};
+  var parsed, problem = "";
+  try { parsed = JSON.parse(document.getElementById("storyFallback").textContent); }
+  catch (err) { parsed = DEFAULT_STORY; problem = String(err && err.message || err); }
+  boot(parsed);
+  if (problem) {
+    var bar = document.createElement("div");
+    bar.setAttribute("role", "alert");
+    bar.style.cssText = "position:fixed;left:0;right:0;bottom:0;z-index:999;background:#b3261e;color:#fff;font:14px/1.4 system-ui,sans-serif;padding:12px 16px;";
+    bar.textContent = "There is a mistake in your edited text, so the original text is shown. Check for a missing comma or quote mark, or a plain quote inside a sentence (write \\\" instead). Browser says: " + problem;
+    document.body.appendChild(bar);
+  }
 })();
 </script>
 </body>
