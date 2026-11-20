@@ -393,6 +393,27 @@ section { margin-top: 112px; }
 /* ---------- Fireworks on the main page ---------- */
 #fireworks { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
 
+/* ---------- Picture button ---------- */
+.picbtn {
+  position: fixed;
+  right: calc(16px + 52px + 10px + env(safe-area-inset-right, 0px));
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  z-index: 20;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid var(--rose);
+  background: color-mix(in srgb, var(--night-2) 88%, transparent);
+  color: var(--rose);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+.picbtn svg { width: 22px; height: 22px; }
+.picbtn:hover, .music:hover { background: color-mix(in srgb, var(--rose) 20%, var(--night-2)); }
+.lb-fig .ph { width: min(78vw, 460px); }
+
 /* ---------- Floating music control ---------- */
 .music {
   position: fixed;
@@ -436,6 +457,10 @@ section { margin-top: 112px; }
 <button class="music" id="musicFab" data-music type="button" aria-pressed="false" aria-label="Play music">
   <svg class="note" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l11-2v12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.5" fill="currentColor"/><circle cx="17.5" cy="16" r="2.5" fill="currentColor"/></svg>
   <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
+</button>
+
+<button class="picbtn" id="picBtn" type="button" aria-label="Open our special picture">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="15" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="10" r="1.8" fill="currentColor"/><path d="M4.5 18l5.2-5.2 3.3 3.3 2.4-2.4 4.1 4.3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </button>
 
 <main class="wrap">
@@ -493,9 +518,14 @@ section { margin-top: 112px; }
       <h2>A note for you</h2>
     </div>
     <div class="letter-card" id="letterCard"></div>
-    <p class="foot">Made with love, on your birthday - (Only time will let you know).</p>
+    <p class="foot">Made with love, on your birthday (ONLY TIME WILL LET YOU KNOW).</p>
   </section>
 </main>
+
+<div class="lb" id="pic" role="dialog" aria-modal="true" aria-label="A special picture" hidden>
+  <button class="round lb-close" id="picClose" type="button" aria-label="Close picture">&times;</button>
+  <figure class="lb-fig" id="picFig"></figure>
+</div>
 
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
   <button class="round lb-close" id="lbClose" type="button" aria-label="Close photo">&times;</button>
@@ -538,11 +568,14 @@ section { margin-top: 112px; }
 <script type="application/json" id="storyFallback">
 {
   "config": {
-    "herName": "SANU",
+    "herName": "Sanu",
     "yourName": "Kesav",
     "birthdayLabel": "22 November 2026 / 06 Mangshir 2083",
     "met": "2026-08-28T18:31:00",
-    "music": true
+    "music": true,
+    "haptics": true,
+    "specialImage": "photos/special.jpeg",
+    "specialCaption": "A Letter"
   },
   "milestones": [
     {
@@ -597,7 +630,7 @@ section { margin-top: 112px; }
     }
   ],
   "gallery": [
-   {
+    {
       "src": "photos/1.jpeg",
       "caption": "Smile"
     },
@@ -1167,13 +1200,13 @@ section { margin-top: 112px; }
     requestAnimationFrame(partyFrame);
   }
   function showtime() {
-    boom(); shimmer(); shake(8);
+    buzz([40, 50, 120, 30, 40, 30]); boom(); shimmer(); shake(8);
     burstCorner(-1, 120, 1); burstCorner(1, 120, 1); pop(); later(80, pop);
-    later(450, function () { curtain(70); sparkle(60); shimmer(); });
-    later(900, function () { fountain(150); pop(); shake(6); });
-    later(1500, function () { burstCorner(-1, 130, 1.15); burstCorner(1, 130, 1.15); pop(); later(90, pop); shake(7); });
-    later(2300, function () { curtain(90); sparkle(90); shimmer(); });
-    later(3000, function () { fountain(180); burstCorner(-1, 100, 1.2); burstCorner(1, 100, 1.2); boom(); pop(); shake(10); });
+    later(450, function () { buzz([20, 40, 20, 40, 20]); curtain(70); sparkle(60); shimmer(); });
+    later(900, function () { buzz([60, 30, 40]); fountain(150); pop(); shake(6); });
+    later(1500, function () { buzz([50, 40, 50]); burstCorner(-1, 130, 1.15); burstCorner(1, 130, 1.15); pop(); later(90, pop); shake(7); });
+    later(2300, function () { buzz([15, 50, 15, 50, 15, 50, 15]); curtain(90); sparkle(90); shimmer(); });
+    later(3000, function () { buzz([150, 50, 90, 40, 60]); fountain(180); burstCorner(-1, 100, 1.2); burstCorner(1, 100, 1.2); boom(); pop(); shake(10); });
     later(3800, function () { $("#gate").classList.add("calm"); party.rainRate = 0.1; });
     later(8000, function () { party.rainRate = 0.04; });
   }
@@ -1346,6 +1379,42 @@ section { margin-top: 112px; }
     setTimeout(function () { fwLaunch(); setTimeout(fwLaunch, 400); }, 150);
   }
 
+  /* ---- haptics: vibration on phones that allow it (Android Chrome); other devices simply do not buzz ---- */
+  var heart = { on: false, t: null };
+  function buzz(pattern) {
+    if (CONFIG.haptics === false) return;
+    try { if (navigator.vibrate) navigator.vibrate(pattern); } catch (err) { /* haptics are optional */ }
+  }
+  function startHeartbeat() {
+    if (heart.on || CONFIG.haptics === false || !navigator.vibrate) return;
+    heart.on = true;
+    function beat() { if (!document.hidden) buzz([55, 95, 85]); }   /* lub ... dub */
+    beat();
+    heart.t = setInterval(beat, 1000);
+  }
+
+  /* ---- special picture ---- */
+  var pic = $("#pic"), picFocus = null;
+  function openPic() {
+    buzz(25);
+    picFocus = document.activeElement;
+    var src = CONFIG.specialImage, cap = CONFIG.specialCaption || "A picture for you";
+    $("#picFig").innerHTML = (src ? '<img src="' + esc(src) + '" alt="' + esc(cap) + '">' : '<div class="ph" style="--p:34">' + HEART + '</div>') +
+      "<figcaption>" + esc(cap) + "</figcaption>";
+    pic.hidden = false;
+    document.body.style.overflow = "hidden";
+    $("#picClose").focus();
+  }
+  function closePic() {
+    pic.hidden = true;
+    document.body.style.overflow = "";
+    if (picFocus && picFocus.focus) picFocus.focus();
+  }
+  $("#picBtn").addEventListener("click", openPic);
+  $("#picClose").addEventListener("click", closePic);
+  pic.addEventListener("click", function (e) { if (e.target === pic) closePic(); });
+  document.addEventListener("keydown", function (e) { if (!pic.hidden && e.key === "Escape") closePic(); });
+
   /* ---- opening screen: the tap starts the music ---- */
   var gate = $("#gate");
   function openGate() {
@@ -1354,10 +1423,12 @@ section { margin-top: 112px; }
     document.body.style.overflow = "";
     setTimeout(function () { gate.hidden = true; party.run = false; }, reduce ? 0 : 950);
     startFireworks();
+    startHeartbeat();
   }
   if (!CONFIG.music) {
     gate.hidden = true;
     startFireworks();
+    startHeartbeat();
   } else {
     document.body.style.overflow = "hidden";
     $("#gateBtn").addEventListener("click", function () { if (!playing) play(); startParty(); });
@@ -1373,7 +1444,10 @@ section { margin-top: 112px; }
 
   } /* end start */
 
-  var DEFAULT_STORY = {"config": {"herName": "My Love", "yourName": "Me", "birthdayLabel": "15 November 2026", "met": "2023-02-14T18:00:00", "music": true}, "milestones": [{"date": "14 February 2023", "title": "The day we met", "text": "Something about that first conversation made time disappear. I still remember how nervous I was.", "photo": "", "cap": "Day one"}, {"date": "2 March 2023", "title": "Our first date", "text": "Terrible weather, wonderful evening. We stayed until they turned the lights off.", "photo": null}, {"date": "21 June 2023", "title": "Our first trip together", "text": "Wrong turns, good food, and far too many photos of the same view.", "photo": "", "cap": "Somewhere new"}, {"date": "15 November 2023", "title": "Your first birthday with me", "text": "I tried to plan something perfect. You laughed at me, and it was perfect anyway.", "photo": "", "cap": "Birthday no. 1"}, {"date": "9 August 2024", "title": "The day I knew", "text": "Nothing special happened that day, which is how I knew.", "photo": null}, {"date": "Today, 15 November 2026", "title": "Your birthday", "text": "Another year, and I still get excited when your name lights up my phone.", "photo": "", "cap": "Today", "today": true}], "gallery": [{"src": "", "caption": "Day one"}, {"src": "", "caption": "Coffee that lasted for hours"}, {"src": "", "caption": "Golden hour"}, {"src": "", "caption": "Our first trip"}, {"src": "", "caption": "Your laugh"}, {"src": "", "caption": "Rainy day plans"}, {"src": "", "caption": "All dressed up"}, {"src": "", "caption": "Sunday morning"}, {"src": "", "caption": "Birthday no. 1"}, {"src": "", "caption": "Today"}], "letter": ["Looking back over this page, what I notice most is how ordinary days turned into the best ones once you were in them.", "Thank you for the laughs, for your patience, for the quiet evenings and the loud ones. I do not know everything this next year will hold, but I know who I want next to me for it.", "Happy birthday, my love. Here is to many more pages."]};
+  var DEFAULT_STORY = {"config": {"herName": "My Love", "yourName": "Me", "birthdayLabel": "15 November 2026", "met": "2023-02-14T18:00:00", "music": true,
+    "haptics": true,
+    "specialImage": "",
+    "specialCaption": "A picture for you"}, "milestones": [{"date": "14 February 2023", "title": "The day we met", "text": "Something about that first conversation made time disappear. I still remember how nervous I was.", "photo": "", "cap": "Day one"}, {"date": "2 March 2023", "title": "Our first date", "text": "Terrible weather, wonderful evening. We stayed until they turned the lights off.", "photo": null}, {"date": "21 June 2023", "title": "Our first trip together", "text": "Wrong turns, good food, and far too many photos of the same view.", "photo": "", "cap": "Somewhere new"}, {"date": "15 November 2023", "title": "Your first birthday with me", "text": "I tried to plan something perfect. You laughed at me, and it was perfect anyway.", "photo": "", "cap": "Birthday no. 1"}, {"date": "9 August 2024", "title": "The day I knew", "text": "Nothing special happened that day, which is how I knew.", "photo": null}, {"date": "Today, 15 November 2026", "title": "Your birthday", "text": "Another year, and I still get excited when your name lights up my phone.", "photo": "", "cap": "Today", "today": true}], "gallery": [{"src": "", "caption": "Day one"}, {"src": "", "caption": "Coffee that lasted for hours"}, {"src": "", "caption": "Golden hour"}, {"src": "", "caption": "Our first trip"}, {"src": "", "caption": "Your laugh"}, {"src": "", "caption": "Rainy day plans"}, {"src": "", "caption": "All dressed up"}, {"src": "", "caption": "Sunday morning"}, {"src": "", "caption": "Birthday no. 1"}, {"src": "", "caption": "Today"}], "letter": ["Looking back over this page, what I notice most is how ordinary days turned into the best ones once you were in them.", "Thank you for the laughs, for your patience, for the quiet evenings and the loud ones. I do not know everything this next year will hold, but I know who I want next to me for it.", "Happy birthday, my love. Here is to many more pages."]};
   var parsed, problem = "";
   try { parsed = JSON.parse(document.getElementById("storyFallback").textContent); }
   catch (err) { parsed = DEFAULT_STORY; problem = String(err && err.message || err); }
